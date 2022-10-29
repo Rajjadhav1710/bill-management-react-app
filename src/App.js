@@ -153,6 +153,7 @@ function App() {
         }
       </div>
       <div>
+        <h3 style={{color:"rgb(23, 201, 95)",marginLeft:"10px"}}>Bill Items</h3>
         {
           bills.map((billItem)=>{
             if(filter==="all" || billItem.category===filter){
