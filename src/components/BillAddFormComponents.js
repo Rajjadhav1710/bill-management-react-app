@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../css/_billAddFormComponent.css";
 
 const BillAddFormComponents = ({setBills,bills,setCategories,categories,getCategoryFrequency}) => {
 
@@ -36,21 +37,21 @@ const BillAddFormComponents = ({setBills,bills,setCategories,categories,getCateg
     };
 
     return (
-        <div>
+        <div className="bill-add-form-container">
             <form onSubmit={handleBillData}>
-                <div>
+                <div className="input-container">
                     <label htmlFor="description">description:</label>
                     <input id="description" type="text" value={description} onChange={(evt)=>{setDescription(evt.target.value)}}/>
                 </div>
-                <div>
+                <div className="input-container">
                     <label htmlFor="category">category:</label>
                     <input id="category" type="text" value={category} onChange={(evt)=>{setCategory(evt.target.value)}} required/>
                 </div>
-                <div>
+                <div className="input-container">
                     <label htmlFor="amount">amount:</label>
                     <input id="amount" type="number" value={amount} onChange={(evt)=>{setAmount(evt.target.value)}} required min={"0"}/>
                 </div>
-                <div>
+                <div className="input-container">
                     <label htmlFor="date">date:</label>
                     <input id="date" type="date" value={date} onChange={(evt)=>{setDate(evt.target.value)}} required/>
                 </div>

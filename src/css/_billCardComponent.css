@@ -1,0 +1,20 @@
+.bill-card{
+    margin: 10px;
+    padding: 5px;
+    background-color: #e3f1e7;
+    border-radius: 5px;
+}
+
+.edit-delete-btn-container{
+    display: flex;
+}
+
+.btn-container{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.input-container{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

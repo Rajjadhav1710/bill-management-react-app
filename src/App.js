@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./App.css"
 
 import BillAddFormComponents from "./components/BillAddFormComponents";
 import BillCardComponent from "./components/BillCardComponent";
@@ -16,6 +17,8 @@ import {
   LineElement,
   Filler 
 } from "chart.js";
+import BillCardForModalComponent from "./components/BillCardForModalComponent";
+import { useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -33,6 +36,9 @@ function App() {
   const [bills, setBills] = useState([]);//Array/list of bill
   const [categories, setCategories] = useState([]);//Array/list of category (unique)
   const [filter, setFilter] = useState("all");
+  const [budget, setBudget] = useState(0);
+  const [isBillInBudgetModalVisible, setIsBillInBudgetModalVisible] = useState(false);
+  const [billsInBudget, setBillsInBudget] = useState([]);//Array/list of bill in budget
 
   const getCategoryFrequency = (bills,category)=>{
     let count=0;
@@ -74,13 +80,36 @@ function App() {
     setBills(editedBillList);
     console.log(bills);
   };
+
+  useEffect(()=>{
+    if(budget!==0){
+      setIsBillInBudgetModalVisible(true);
+    }
+  },[billsInBudget,budget]);
+
+  const handleBudget = (evt)=>{
+    evt.preventDefault();
+    let myBudget = budget;
+    let billsInBudgetList = bills.map((billItem)=>{
+      if(billItem.amount<=myBudget){
+        myBudget = myBudget-billItem.amount;
+        return(billItem);
+      }else{
+        return null;
+      }
+    });
+    setBillsInBudget(billsInBudgetList);
+  };
   
   return (
     <div>
+      <div style={{textAlign:"center",color:"#17c95f"}}>
+        <h1>Bill Management</h1>
+      </div>
       <div>
         <BillAddFormComponents setBills={setBills} bills={bills} categories={categories} setCategories={setCategories} getCategoryFrequency={getCategoryFrequency}/>
       </div>
-      <div>
+      <div className="filter-container">
         <label htmlFor="filter-by-category">filter : </label>
         <select name="" id="filter-by-category" onChange={(evt)=>{setFilter(evt.target.value)}}>
           <option value="all">all</option>
@@ -88,6 +117,40 @@ function App() {
             categories.map((categoryItem,index)=><option key={index} value={categoryItem}>{categoryItem}</option>)
           }
         </select>
+      </div>
+      <div className="budget-container">
+        <form onSubmit={handleBudget}>
+          <div>
+            <label htmlFor="budget">budget : </label>
+            <input type="number" id="budget" value={budget} onChange={(evt)=>setBudget(evt.target.value)} min={"0"} required/>
+            <button type="submit">submit</button>
+          </div>
+        </form>
+        {
+          isBillInBudgetModalVisible 
+          ? 
+          <div className="bill-in-budget-modal" style={{backgroundColor:"#ffffff",  boxShadow: "0 8px 32px 0 #b7f1cd"}}>
+            <div>
+              <p style={{marginLeft:"10px",textAlign:"center",color:"#17c95f"}}>Bills that should be paid</p>
+            </div>
+            <div>
+              {
+                billsInBudget.map((billItem)=>{
+                  if(billItem){
+                    return(<BillCardForModalComponent key={billItem.id} billItem={billItem}/>);
+                  }else{
+                    return null;
+                  }
+                })
+              }
+            </div>
+            <div style={{margin:"10px 10px 5px 10px",textAlign:"center"}}>
+              <button onClick={()=>{setIsBillInBudgetModalVisible(false)}}>close</button>
+            </div>
+          </div>
+          :
+          null
+        }
       </div>
       <div>
         {
@@ -100,7 +163,7 @@ function App() {
           })
         }
       </div>
-      <div>
+      <div className="chart-container">
         <Line options={{
           responsive : true,
           plugins : {
@@ -140,7 +203,9 @@ function App() {
           ]
         }}/>
       </div>
-
+      <div className="footer" style={{textAlign:"center"}}> 
+        <p>made with ❤️ in india for brightmoney</p>
+      </div>
     </div>
   );
 }

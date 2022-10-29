@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../css/_billCardComponent.css";
 
 const BillCardComponent = ({billItem,deleteBillItem,editBillItem}) => {
     const [isEditable, setIsEditable] = useState(false);
@@ -25,22 +26,22 @@ const BillCardComponent = ({billItem,deleteBillItem,editBillItem}) => {
         {
             isEditable 
             ? 
-            <div>
+            <div className="bill-card">
                 <form onSubmit={handleEditedBillData}>
-                    <div>
-                        <label htmlFor="edited_description">description:</label>
+                    <div className="input-container">
+                        <label htmlFor="edited_description">description : </label>
                         <input id="edited_description" type="text" value={editedDescription} onChange={(evt)=>{setEditedDescription(evt.target.value)}}/>
                     </div>
-                    <div>
-                        <label htmlFor="edited_category">category:</label>
+                    <div className="input-container">
+                        <label htmlFor="edited_category">category : </label>
                         <input id="edited_category" type="text" value={editedCategory} onChange={(evt)=>{setEditedCategory(evt.target.value)}} required/>
                     </div>
                     <div>
-                        <label htmlFor="edited_amount">amount:</label>
+                        <label htmlFor="edited_amount">amount : </label>
                         <input id="edited_amount" type="number" value={editedamount} onChange={(evt)=>{setEditedAmount(evt.target.value)}} required min={"0"}/>
                     </div>
-                    <div>
-                        <label htmlFor="edited_date">date:</label>
+                    <div className="input-container">
+                        <label htmlFor="edited_date">date : </label>
                         <input id="edited_date" type="date" value={editedDate} onChange={(evt)=>{setEditedDate(evt.target.value)}} required/>
                     </div>
                     <div>
@@ -49,18 +50,18 @@ const BillCardComponent = ({billItem,deleteBillItem,editBillItem}) => {
                 </form>
             </div>
             :
-            <div>
+            <div className="bill-card">
                 <div>
-                    <p>description:{billItem.description}</p>
-                    <p>category:{billItem.category}</p>
-                    <p>amount:{billItem.amount}</p>
-                    <p>date:{billItem.date}</p>
+                    <p><span>description</span> : {billItem.description}</p>
+                    <p><span>category</span> : {billItem.category}</p>
+                    <p><span>amount</span> : {billItem.amount}</p>
+                    <p><span>date</span> : {billItem.date}</p>
                 </div>
-                <div>
-                    <div>
+                <div className="edit-delete-btn-container">
+                    <div className="btn-container">
                         <button onClick={()=>{setIsEditable(true)}}>edit</button>
                     </div>
-                    <div>
+                    <div className="btn-container">
                         <button onClick={()=>{deleteBillItem(billItem.id)}}>delete</button>
                     </div>
                 </div>
