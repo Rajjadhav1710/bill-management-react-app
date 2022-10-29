@@ -3,6 +3,32 @@ import React, { useState } from "react";
 import BillAddFormComponents from "./components/BillAddFormComponents";
 import BillCardComponent from "./components/BillCardComponent";
 
+import { Line } from 'react-chartjs-2';
+import { 
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Filler 
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Filler
+);
+
 function App() {
   const [bills, setBills] = useState([]);//Array/list of bill
   const [categories, setCategories] = useState([]);//Array/list of category (unique)
@@ -42,6 +68,9 @@ function App() {
         return billItem;
       }
     });
+    editedBillList.sort(function(a,b){
+      return b.date - a.date;
+    });
     setBills(editedBillList);
     console.log(bills);
   };
@@ -71,6 +100,47 @@ function App() {
           })
         }
       </div>
+      <div>
+        <Line options={{
+          responsive : true,
+          plugins : {
+            legend : {
+              position : "top"
+            },
+            title : {
+              display : true,
+              text : "Time-series chart of the monthly billing cycle"
+            }
+          },
+          scales : {
+            x : {
+              display : true,
+              title : {
+                display : true,
+                text : "Date"
+              }
+            },
+            y : {
+              display : true,
+              title : {
+                display : true,
+                text : "Amount"
+              }
+            }
+          }
+        }} data={{
+          labels : bills.map((billItem)=>billItem.date),
+          datasets : [
+            {
+              label : "Bill",
+              data : bills.map((billItem)=>billItem.amount),
+              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            }
+          ]
+        }}/>
+      </div>
+
     </div>
   );
 }

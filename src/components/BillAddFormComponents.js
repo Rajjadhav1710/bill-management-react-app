@@ -23,7 +23,11 @@ const BillAddFormComponents = ({setBills,bills,setCategories,categories,getCateg
             setCategories([...categories,newBillItem.category]);
         }
 
-        setBills([...bills,newBillItem]);
+        let newBillList = [...bills,newBillItem];
+        newBillList.sort(function(a,b){
+            return b.date - a.date;
+        });
+        setBills(newBillList);
         setDescription("");
         setCategory("");
         setAmount(0);
